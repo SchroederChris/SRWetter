@@ -30,7 +30,31 @@ android {
     }
 }
 
+configurations {
+    apt
+}
+
 dependencies {
     compile 'org.jsoup:jsoup:1.7.3'
     compile 'com.squareup.picasso:picasso:2.1.1'
+    compile 'de.devland.esperandro:esperandro-api:1.1'
+    apt 'de.devland.esperandro:esperandro:1.1'
+}
+
+android.applicationVariants.all { variant ->
+    aptOutput = file("${project.buildDir}/source/apt_generated/${variant.dirName}")
+    println "****************************"
+    println "variant: ${variant.name}"
+    println "manifest:  ${variant.processResources.manifestFile}"
+    println "aptOutput:  ${aptOutput}"
+    println "****************************"
+
+    variant.javaCompile.doFirst {
+        println "*** compile doFirst ${variant.name}"
+        aptOutput.mkdirs()
+        variant.javaCompile.options.compilerArgs += [
+                '-processorpath', configurations.apt.getAsPath(),
+                '-s', aptOutput
+        ]
+    }
 }
