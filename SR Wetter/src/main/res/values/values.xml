@@ -1,0 +1,3 @@
+<resources>
+    <integer name="image_resize_factor">1</integer>
+</resources>

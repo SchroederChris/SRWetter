@@ -20,7 +20,6 @@ import java.io.IOException;
 
 public class WeatherActivity extends Activity {
     private static final String URL = "http://www.sr-online.de/sronline/nachrichten/wetter/wetter_popup_SR_online100.html";
-    private static final int IMG_RESIZE_FACTOR = 3;
     private static final String CONDITION_IDENTIFIER = "wetterlage";
     private static final String CONTENT_IDENTIFIER = "content";
 
@@ -82,10 +81,14 @@ public class WeatherActivity extends Activity {
 
         Element dayImgTd = dayTrElement.child(0);
         Element dayImg = dayImgTd.child(0);
+
         String dayImgSrc = dayImg.attr("src");
         String imgWidth = dayImg.attr("width");
         String imageHeight = dayImg.attr("height");
-        Picasso.with(this).load("http://www.sr-online.de" + dayImgSrc).resize(Integer.valueOf(imgWidth) * IMG_RESIZE_FACTOR, Integer.valueOf(imageHeight) * IMG_RESIZE_FACTOR).into(imageView);
+
+        int targetWidth = Integer.valueOf(imgWidth) * getResources().getInteger(R.integer.image_resize_factor);
+        int targetHeight = Integer.valueOf(imageHeight) * getResources().getInteger(R.integer.image_resize_factor);
+        Picasso.with(this).load("http://www.sr-online.de" + dayImgSrc).resize(targetWidth, targetHeight).into(imageView);
 
         Element dayTextElement = dayTrElement.child(2);
         String dayText = dayTextElement.html();
