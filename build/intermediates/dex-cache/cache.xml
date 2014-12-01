@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pre-dex-items>
+
+    <item
+        dex="C:\dev\github\SRWetter\SR Wetter\build\intermediates\pre-dexed\debug\esperandro-api-1.1-4ec76974a12773bef696790f8bbc2095d98f9a95.jar"
+        jar="C:\Users\Christian\.gradle\caches\modules-2\files-2.1\de.devland.esperandro\esperandro-api\1.1\202bb4288b0ef3093358299f56ee9bebe7ce106e\esperandro-api-1.1.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="202bb4288b0ef3093358299f56ee9bebe7ce106e"/>
+    <item
+        dex="C:\dev\github\SRWetter\SR Wetter\build\intermediates\pre-dexed\debug\picasso-2.1.1-9bccaa593258eaf224a3afb941ff7002dcdc9b70.jar"
+        jar="C:\Users\Christian\.gradle\caches\modules-2\files-2.1\com.squareup.picasso\picasso\2.1.1\ab19bfb23f641f189b6dca9a4d393f8dc291103a\picasso-2.1.1.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="ab19bfb23f641f189b6dca9a4d393f8dc291103a"/>
+    <item
+        dex="C:\dev\github\SRWetter\SR Wetter\build\intermediates\pre-dexed\debug\jsoup-1.7.3-ad6c6865270fc0a27ee8a5bb21f195e354d3233d.jar"
+        jar="C:\Users\Christian\.gradle\caches\modules-2\files-2.1\org.jsoup\jsoup\1.7.3\92568d7167ce1bf9eb1fd815b022d5a2c113547a\jsoup-1.7.3.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="92568d7167ce1bf9eb1fd815b022d5a2c113547a"/>
+
+</pre-dex-items>
