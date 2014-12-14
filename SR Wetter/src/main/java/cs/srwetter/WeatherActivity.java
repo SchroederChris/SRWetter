@@ -24,7 +24,7 @@ import java.io.IOException;
 import de.devland.esperandro.Esperandro;
 
 public class WeatherActivity extends Activity {
-    private static final String URL = "http://www.sr-online.de/sronline/nachrichten/wetter/wetter_popup_SR_online100.html";
+    private static final String URL = "http://www.sr-online.de/sronline/nachrichten/wetter/wetter_popup_SR_online102.html";
     private static final String IMG_BASE_URL = "http://www.sr-online.de";
     private static final String CONDITION_IDENTIFIER = "wetterlage";
     private static final String CONTENT_IDENTIFIER = "content";
