@@ -5,7 +5,10 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,7 +26,7 @@ import java.io.IOException;
 
 import de.devland.esperandro.Esperandro;
 
-public class WeatherActivity extends Activity {
+public class WeatherActivity extends Activity implements SwipeRefreshLayout.OnRefreshListener {
     private static final String URL = "http://www.sr-online.de/sronline/nachrichten/wetter/wetter_popup_SR_online102.html";
     private static final String IMG_BASE_URL = "http://www.sr-online.de";
     private static final String CONDITION_IDENTIFIER = "wetterlage";
@@ -32,6 +35,9 @@ public class WeatherActivity extends Activity {
     private static final int TODAY = 0;
     private static final int TOMORROW = 1;
     private static final int OUTLOOK = 2;
+
+    Toolbar toolbar;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     private WebView conditionsView;
     private ImageView todayImageView;
@@ -61,6 +67,12 @@ public class WeatherActivity extends Activity {
     }
 
     private void initViews() {
+        toolbar = (Toolbar) findViewById(R.id.actionbar_toolbar);
+
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.material_design_indigo));
+
         conditionsView = (WebView) findViewById(R.id.conditions);
         todayImageView = (ImageView) findViewById(R.id.todayImage);
         todayWebView = (WebView) findViewById(R.id.todayText);
@@ -76,6 +88,13 @@ public class WeatherActivity extends Activity {
     }
 
     private void fillViews() {
+        toolbar.setTitle(preferences.updateTime());
+        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            toolbar.setElevation(10);
+        }
+
         conditionsView.loadData(preferences.conditionsText(), "text/html", "utf-8");
 
         todayWebView.loadData(preferences.todayText(), "text/html", "utf-8");
@@ -91,6 +110,18 @@ public class WeatherActivity extends Activity {
         picasso.load(IMG_BASE_URL + preferences.outlookImgSrc()).resize(
                 preferences.outlookImgWidth() * getResources().getInteger(R.integer.image_resize_factor),
                 preferences.outlookImgHeigth() * getResources().getInteger(R.integer.image_resize_factor)).into(outlookImageView);
+    }
+
+    private void extractRefreshTime(Document document) {
+        Element html = document.child(0);
+        Element body = html.child(1);
+        Element table = body.child(0);
+        Element tbody = table.child(0);
+        Element updateRow = tbody.child(1);
+        Element updateField = updateRow.child(0);
+        String updateTimeText = updateField.html();
+        updateTimeText = updateTimeText.replace("&nbsp;", " ");
+        preferences.updateTime(updateTimeText);
     }
 
     private void extractConditions(Document document) {
@@ -135,27 +166,16 @@ public class WeatherActivity extends Activity {
         return dayImg.attr(attributeKey);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.mainmenu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_refresh:
-                loadContent();
-                break;
-        }
-        return true;
-    }
 
     private boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+    @Override
+    public void onRefresh() {
+        loadContent();
     }
 
     private class DownloadWebpageTask extends AsyncTask<String, Void, Document> {
@@ -178,11 +198,13 @@ public class WeatherActivity extends Activity {
             super.onPostExecute(document);
 
             if (document != null) {
+                extractRefreshTime(document);
                 extractConditions(document);
                 extractDailyContent(document);
             }
 
             fillViews();
+            swipeRefreshLayout.setRefreshing(false);
         }
     }
 

@@ -4,6 +4,9 @@ import de.devland.esperandro.annotations.SharedPreferences;
 
 @SharedPreferences
 public interface WeatherPreferences {
+    String updateTime();
+    void updateTime(String updateTime);
+
     String conditionsText();
     void conditionsText(String conditionsText);
 
