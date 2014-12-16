@@ -9,7 +9,7 @@
     <color name="sr_blue">#000099</color>
     <color name="material_design_indigo">#3F51B5</color>
     <color name="material_design_indigo_dark">#303F9F</color>
-    <color name="white">#FFFFFF</color>
-    <color name="light_grey">#ffaaaaaa</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="background">#FFEEEEEE</color>
 
 </resources>
