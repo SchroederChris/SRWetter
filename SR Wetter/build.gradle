@@ -38,5 +38,6 @@ dependencies {
     compile 'org.jsoup:jsoup:1.7.3'
     compile 'com.squareup.picasso:picasso:2.1.1'
     compile 'de.devland.esperandro:esperandro-api:1.1'
+    compile 'com.jakewharton:butterknife:6.0.0'
     apt 'de.devland.esperandro:esperandro:1.1'
 }

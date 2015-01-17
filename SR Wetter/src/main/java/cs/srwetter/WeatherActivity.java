@@ -24,6 +24,8 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import de.devland.esperandro.Esperandro;
 
 public class WeatherActivity extends Activity implements SwipeRefreshLayout.OnRefreshListener {
@@ -36,16 +38,32 @@ public class WeatherActivity extends Activity implements SwipeRefreshLayout.OnRe
     private static final int TOMORROW = 1;
     private static final int OUTLOOK = 2;
 
+    @InjectView(R.id.actionbar_toolbar)
     Toolbar toolbar;
+
+    @InjectView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
 
-    private WebView conditionsView;
-    private ImageView todayImageView;
-    private WebView todayWebView;
-    private ImageView tomorrowImageView;
-    private WebView tomorrowWebView;
-    private ImageView outlookImageView;
-    private WebView outlookWebView;
+    @InjectView(R.id.conditions)
+    WebView conditionsView;
+
+    @InjectView(R.id.todayImage)
+    ImageView todayImageView;
+
+    @InjectView(R.id.todayText)
+    WebView todayWebView;
+
+    @InjectView(R.id.tomorrowImage)
+    ImageView tomorrowImageView;
+
+    @InjectView(R.id.tomorrowText)
+    WebView tomorrowWebView;
+
+    @InjectView(R.id.outlookImage)
+    ImageView outlookImageView;
+
+    @InjectView(R.id.outlookText)
+    WebView outlookWebView;
 
     private WeatherPreferences preferences;
     private Picasso picasso;
@@ -54,6 +72,7 @@ public class WeatherActivity extends Activity implements SwipeRefreshLayout.OnRe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
+        ButterKnife.inject(this);
 
         if (preferences == null) {
             preferences = Esperandro.getPreferences(WeatherPreferences.class, this);
@@ -72,19 +91,8 @@ public class WeatherActivity extends Activity implements SwipeRefreshLayout.OnRe
     }
 
     private void initViews() {
-        toolbar = (Toolbar) findViewById(R.id.actionbar_toolbar);
-
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.material_design_indigo));
-
-        conditionsView = (WebView) findViewById(R.id.conditions);
-        todayImageView = (ImageView) findViewById(R.id.todayImage);
-        todayWebView = (WebView) findViewById(R.id.todayText);
-        tomorrowImageView = (ImageView) findViewById(R.id.tomorrowImage);
-        tomorrowWebView = (WebView) findViewById(R.id.tomorrowText);
-        outlookImageView = (ImageView) findViewById(R.id.outlookImage);
-        outlookWebView = (WebView) findViewById(R.id.outlookText);
     }
 
     private void loadContent() {
