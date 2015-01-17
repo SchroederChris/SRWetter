@@ -63,6 +63,11 @@ public class WeatherActivity extends Activity implements SwipeRefreshLayout.OnRe
         }
 
         initViews();
+
+        if (preferences.updateTime() != null) {
+            fillViews();
+        }
+
         loadContent();
     }
 
@@ -83,8 +88,11 @@ public class WeatherActivity extends Activity implements SwipeRefreshLayout.OnRe
     }
 
     private void loadContent() {
-        DownloadWebpageTask task = new DownloadWebpageTask();
-        task.execute(URL);
+        if (isOnline()) {
+            DownloadWebpageTask task = new DownloadWebpageTask();
+            swipeRefreshLayout.setRefreshing(true);
+            task.execute(URL);
+        }
     }
 
     private void fillViews() {
@@ -95,11 +103,11 @@ public class WeatherActivity extends Activity implements SwipeRefreshLayout.OnRe
             toolbar.setElevation(10);
         }
 
-        conditionsView.loadData(preferences.conditionsText(), "text/html", "utf-8");
+        conditionsView.loadData(preferences.conditionsText(), "text/html; charset=UTF-8", null);
 
-        todayWebView.loadData(preferences.todayText(), "text/html", "utf-8");
-        tomorrowWebView.loadData(preferences.tomorrowText(), "text/html", "utf-8");
-        outlookWebView.loadData(preferences.outlookText(), "text/html", "utf-8");
+        todayWebView.loadData(preferences.todayText(), "text/html; charset=UTF-8", null);
+        tomorrowWebView.loadData(preferences.tomorrowText(), "text/html; charset=UTF-8", null);
+        outlookWebView.loadData(preferences.outlookText(), "text/html; charset=UTF-8", null);
 
         picasso.load(IMG_BASE_URL + preferences.todayImgSrc()).resize(
                 preferences.todayImgWidth() * getResources().getInteger(R.integer.image_resize_factor),
@@ -205,6 +213,12 @@ public class WeatherActivity extends Activity implements SwipeRefreshLayout.OnRe
 
             fillViews();
             swipeRefreshLayout.setRefreshing(false);
+        }
+
+        @Override
+        protected void onCancelled() {
+            swipeRefreshLayout.setRefreshing(false);
+            super.onCancelled();
         }
     }
 
