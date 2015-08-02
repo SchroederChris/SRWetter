@@ -9,9 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.webkit.WebView;
 import android.widget.ImageView;
 
@@ -37,6 +34,8 @@ public class WeatherActivity extends Activity implements SwipeRefreshLayout.OnRe
     private static final int TODAY = 0;
     private static final int TOMORROW = 1;
     private static final int OUTLOOK = 2;
+
+    private static final long AUTO_REFRESH_INTERVAL = 60 * 60 * 1000;
 
     @InjectView(R.id.actionbar_toolbar)
     Toolbar toolbar;
@@ -73,27 +72,30 @@ public class WeatherActivity extends Activity implements SwipeRefreshLayout.OnRe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
         ButterKnife.inject(this);
+        initSwipeRefreshLayout();
 
-        if (preferences == null) {
-            preferences = Esperandro.getPreferences(WeatherPreferences.class, this);
-        }
-        if (picasso == null) {
-            picasso = Picasso.with(this);
-        }
-
-        initViews();
+        preferences = Esperandro.getPreferences(WeatherPreferences.class, this);
+        picasso = Picasso.with(this);
 
         if (preferences.updateTime() != null) {
             fillViews();
         }
-
-        loadContent();
     }
 
-    private void initViews() {
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (System.currentTimeMillis() - preferences.lastRefresh() > AUTO_REFRESH_INTERVAL) {
+            loadContent();
+        }
+    }
+
+    private void initSwipeRefreshLayout() {
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.material_design_indigo));
     }
+
 
     private void loadContent() {
         if (isOnline()) {
@@ -220,6 +222,7 @@ public class WeatherActivity extends Activity implements SwipeRefreshLayout.OnRe
             }
 
             fillViews();
+            preferences.lastRefresh(System.currentTimeMillis());
             swipeRefreshLayout.setRefreshing(false);
         }
 

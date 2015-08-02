@@ -48,4 +48,7 @@ public interface WeatherPreferences {
 
     int outlookImgHeigth();
     void outlookImgHeigth(int outlookImgHeigth);
+
+    long lastRefresh();
+    void lastRefresh(long millis);
 }
