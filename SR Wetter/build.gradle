@@ -1,13 +1,4 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:1.0.0'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.2'
-    }
-}
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 
 repositories {
@@ -15,29 +6,24 @@ repositories {
 }
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.1"
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 21
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
-    }
-    buildTypes {
-        release {
-
-        }
     }
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:21.0.+'
-    compile 'com.android.support:cardview-v7:21.0.+'
-    compile 'com.android.support:support-v4:21.0.2'
-    compile 'org.jsoup:jsoup:1.7.3'
-    compile 'com.squareup.picasso:picasso:2.1.1'
-    compile 'de.devland.esperandro:esperandro-api:1.1'
-    compile 'com.jakewharton:butterknife:6.0.0'
-    apt 'de.devland.esperandro:esperandro:1.1'
+    compile 'com.android.support:appcompat-v7:22.2.1'
+    compile 'com.android.support:cardview-v7:22.2.1'
+    compile 'com.android.support:support-v4:22.2.1'
+    compile 'org.jsoup:jsoup:1.8.2'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'de.devland.esperandro:esperandro-api:2.2.0'
+    compile 'com.jakewharton:butterknife:7.0.1'
+    apt 'de.devland.esperandro:esperandro:2.2.0'
 }

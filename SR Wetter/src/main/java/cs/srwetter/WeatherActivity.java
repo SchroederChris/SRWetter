@@ -21,8 +21,8 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import de.devland.esperandro.Esperandro;
 
 public class WeatherActivity extends Activity implements SwipeRefreshLayout.OnRefreshListener {
@@ -37,31 +37,31 @@ public class WeatherActivity extends Activity implements SwipeRefreshLayout.OnRe
 
     private static final long AUTO_REFRESH_INTERVAL = 60 * 60 * 1000;
 
-    @InjectView(R.id.actionbar_toolbar)
+    @Bind(R.id.actionbar_toolbar)
     Toolbar toolbar;
 
-    @InjectView(R.id.swipe_refresh_layout)
+    @Bind(R.id.swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
 
-    @InjectView(R.id.conditions)
+    @Bind(R.id.conditions)
     WebView conditionsView;
 
-    @InjectView(R.id.todayImage)
+    @Bind(R.id.todayImage)
     ImageView todayImageView;
 
-    @InjectView(R.id.todayText)
+    @Bind(R.id.todayText)
     WebView todayWebView;
 
-    @InjectView(R.id.tomorrowImage)
+    @Bind(R.id.tomorrowImage)
     ImageView tomorrowImageView;
 
-    @InjectView(R.id.tomorrowText)
+    @Bind(R.id.tomorrowText)
     WebView tomorrowWebView;
 
-    @InjectView(R.id.outlookImage)
+    @Bind(R.id.outlookImage)
     ImageView outlookImageView;
 
-    @InjectView(R.id.outlookText)
+    @Bind(R.id.outlookText)
     WebView outlookWebView;
 
     private WeatherPreferences preferences;
@@ -71,7 +71,7 @@ public class WeatherActivity extends Activity implements SwipeRefreshLayout.OnRe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         initSwipeRefreshLayout();
 
         preferences = Esperandro.getPreferences(WeatherPreferences.class, this);
